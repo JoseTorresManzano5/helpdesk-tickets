@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard · Riesgo de resolución lenta de tickets (Helpdesk)</title>
+<style>
+  .viz-root {
+    color-scheme: light;
+    --surface-1: #fcfcfb; --page: #f9f9f7;
+    --text: #0b0b0b; --text2: #52514e; --muted: #898781;
+    --grid: #e1e0d9; --baseline: #c3c2b7;
+    --blue: #2a78d6; --orange: #eb6834;
+    --good: #0ca30c; --critical: #d03b3b; --border: rgba(11,11,11,0.10);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+  header h1 { font-size: 22px; margin: 0 0 4px; }
+  header p { color: var(--text2); margin: 0 0 28px; font-size: 14px; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .tile {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .tile .label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+  .tile .value { font-size: 28px; font-weight: 600; }
+  .tile .sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 20px;
+  }
+  .card h2 { font-size: 15px; margin: 0 0 4px; }
+  .card .finding { font-size: 13px; color: var(--text2); margin: 0 0 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--grid); }
+  th { color: var(--text2); font-weight: 600; font-size: 12px; }
+  tr.highlight td { font-weight: 700; }
+  .frow { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .flabel { width: 170px; font-size: 12px; color: var(--text2); }
+  .fval { font-size: 12px; font-weight: 600; width: 40px; }
+  .qa { padding: 14px 0; border-bottom: 1px solid var(--grid); }
+  .qa:last-child { border-bottom: none; }
+  .qa .q { font-weight: 600; font-size: 13px; margin: 0 0 6px; }
+  .qa .a { font-size: 13px; color: var(--text2); margin: 0 0 8px; white-space: pre-wrap; }
+  .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 600; }
+  .badge.good { background: rgba(12,163,12,0.12); color: var(--good); }
+  .badge.bad { background: rgba(208,59,59,0.12); color: var(--critical); }
+  .empty-state { font-size: 13px; color: var(--muted); padding: 10px 0; }
+  .bar { transition: opacity .15s; }
+  .bar:hover { opacity: 0.75; }
+  footer { color: var(--muted); font-size: 11px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+  <header>
+    <h1>¿Qué tickets de mesa de ayuda se van a demorar?</h1>
+    <p>Dataset Helpdesk (Verenich, 2016 · Mendeley Data · MIT) — 3804 casos,
+       13710 eventos, 2010-01-13 a 2012-11-06</p>
+  </header>
+
+  <div class="tiles">
+    <div class="tile"><div class="label">Duración mediana</div>
+      <div class="value">94 h</div>
+      <div class="sub">tiempo de resolución</div></div>
+    <div class="tile"><div class="label">Tickets con reproceso</div>
+      <div class="value">27.4%</div>
+      <div class="sub">tardan 4.6x más (mediana)</div></div>
+    <div class="tile"><div class="label">AUC del modelo</div>
+      <div class="value">0.64</div>
+      <div class="sub">Regresión logística, fuera de muestra (2012)</div></div>
+    <div class="tile"><div class="label">Señal más fuerte</div>
+      <div class="value">64%</div>
+      <div class="sub">gap_to_second_event_h</div></div>
+  </div>
+
+  <div class="card">
+    <h2>Distribución del tiempo de resolución</h2>
+    <p class="finding">La mayoría de los tickets se resuelve rápido, pero una cola larga se
+      demora semanas — por eso se usa un umbral (p75) en vez de la hora exacta.</p>
+    <svg viewBox="0 0 640 220" width="100%" height="220"><rect class="bar" x="1.0" y="20.0" width="24.7" height="200.0" rx="2" fill="var(--blue)"><title>1479 tickets, -1-40 h</title></rect><rect class="bar" x="27.7" y="169.7" width="24.7" height="50.3" rx="2" fill="var(--blue)"><title>372 tickets, 40-80 h</title></rect><rect class="bar" x="54.3" y="189.4" width="24.7" height="30.6" rx="2" fill="var(--blue)"><title>226 tickets, 80-120 h</title></rect><rect class="bar" x="81.0" y="192.1" width="24.7" height="27.9" rx="2" fill="var(--blue)"><title>206 tickets, 120-160 h</title></rect><rect class="bar" x="107.7" y="189.4" width="24.7" height="30.6" rx="2" fill="var(--blue)"><title>226 tickets, 160-200 h</title></rect><rect class="bar" x="134.3" y="209.9" width="24.7" height="10.1" rx="2" fill="var(--blue)"><title>75 tickets, 200-240 h</title></rect><rect class="bar" x="161.0" y="208.6" width="24.7" height="11.4" rx="2" fill="var(--blue)"><title>84 tickets, 240-280 h</title></rect><rect class="bar" x="187.7" y="205.0" width="24.7" height="15.0" rx="2" fill="var(--blue)"><title>111 tickets, 280-319 h</title></rect><rect class="bar" x="214.3" y="206.2" width="24.7" height="13.8" rx="2" fill="var(--blue)"><title>102 tickets, 319-359 h</title></rect><rect class="bar" x="241.0" y="209.2" width="24.7" height="10.8" rx="2" fill="var(--blue)"><title>80 tickets, 359-399 h</title></rect><rect class="bar" x="267.7" y="202.8" width="24.7" height="17.2" rx="2" fill="var(--blue)"><title>127 tickets, 399-439 h</title></rect><rect class="bar" x="294.3" y="210.0" width="24.7" height="10.0" rx="2" fill="var(--blue)"><title>74 tickets, 439-479 h</title></rect><rect class="bar" x="321.0" y="207.2" width="24.7" height="12.8" rx="2" fill="var(--blue)"><title>95 tickets, 479-519 h</title></rect><rect class="bar" x="347.7" y="208.6" width="24.7" height="11.4" rx="2" fill="var(--blue)"><title>84 tickets, 519-559 h</title></rect><rect class="bar" x="374.3" y="214.9" width="24.7" height="5.1" rx="2" fill="var(--blue)"><title>38 tickets, 559-599 h</title></rect><rect class="bar" x="401.0" y="213.1" width="24.7" height="6.9" rx="2" fill="var(--blue)"><title>51 tickets, 599-639 h</title></rect><rect class="bar" x="427.7" y="209.9" width="24.7" height="10.1" rx="2" fill="var(--blue)"><title>75 tickets, 639-679 h</title></rect><rect class="bar" x="454.3" y="214.3" width="24.7" height="5.7" rx="2" fill="var(--blue)"><title>42 tickets, 679-719 h</title></rect><rect class="bar" x="481.0" y="215.7" width="24.7" height="4.3" rx="2" fill="var(--blue)"><title>32 tickets, 719-759 h</title></rect><rect class="bar" x="507.7" y="215.7" width="24.7" height="4.3" rx="2" fill="var(--blue)"><title>32 tickets, 759-799 h</title></rect><rect class="bar" x="534.3" y="216.1" width="24.7" height="3.9" rx="2" fill="var(--blue)"><title>29 tickets, 799-839 h</title></rect><rect class="bar" x="561.0" y="215.3" width="24.7" height="4.7" rx="2" fill="var(--blue)"><title>35 tickets, 839-879 h</title></rect><rect class="bar" x="587.7" y="215.5" width="24.7" height="4.5" rx="2" fill="var(--blue)"><title>33 tickets, 879-919 h</title></rect><rect class="bar" x="614.3" y="207.0" width="24.7" height="13.0" rx="2" fill="var(--blue)"><title>96 tickets, 919-958 h</title></rect><line x1="227.9" y1="0" x2="227.9" y2="220" stroke="var(--critical)" stroke-width="2" stroke-dasharray="4,3"/><text x="233.9" y="14" font-size="11" fill="var(--critical)">umbral p75 (341 h)</text></svg>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>El reproceso casi cuadruplica la demora</h2>
+      <p class="finding">Mediana de horas hasta el cierre, con y sin una actividad repetida.</p>
+      <svg viewBox="0 0 560 110" width="100%" height="110"><text x="0" y="4" font-size="12" fill="var(--text2)">Sin reproceso</text><rect x="0" y="10" width="101.0" height="36" rx="4" fill="#0ca30c"><title>Sin reproceso: mediana 52 h</title></rect><text x="109.0" y="32" font-size="13" fill="var(--text)" font-weight="600">52 h</text><text x="0" y="62" font-size="12" fill="var(--text2)">Con reproceso</text><rect x="0" y="68" width="460.0" height="36" rx="4" fill="#d03b3b"><title>Con reproceso: mediana 236 h</title></rect><text x="468.0" y="90" font-size="13" fill="var(--text)" font-weight="600">236 h</text></svg>
+    </div>
+    <div class="card">
+      <h2>Riesgo por día de apertura (lun–vie)</h2>
+      <p class="finding">Variación moderada; sáb/dom excluidos por tamaño de muestra insuficiente
+        (56 de 3804 casos).</p>
+      <svg viewBox="0 0 420 210" width="100%" height="210"><rect x="10" y="66.7" width="70" height="113.3" rx="3" fill="#2a78d6"><title>Lun: 20.8% de tickets lentos</title></rect><text x="45.0" y="196" font-size="12" text-anchor="middle" fill="var(--text2)">Lun</text><text x="45.0" y="60.7" font-size="11" text-anchor="middle" fill="var(--text)" font-weight="400">21%</text><rect x="100" y="75.6" width="70" height="104.4" rx="3" fill="#2a78d6"><title>Mar: 19.1% de tickets lentos</title></rect><text x="135.0" y="196" font-size="12" text-anchor="middle" fill="var(--text2)">Mar</text><text x="135.0" y="69.6" font-size="11" text-anchor="middle" fill="var(--text)" font-weight="400">19%</text><rect x="190" y="64.1" width="70" height="115.9" rx="3" fill="#2a78d6"><title>Mié: 21.2% de tickets lentos</title></rect><text x="225.0" y="196" font-size="12" text-anchor="middle" fill="var(--text2)">Mié</text><text x="225.0" y="58.1" font-size="11" text-anchor="middle" fill="var(--text)" font-weight="400">21%</text><rect x="280" y="55.0" width="70" height="125.0" rx="3" fill="#2a78d6"><title>Jue: 22.9% de tickets lentos</title></rect><text x="315.0" y="196" font-size="12" text-anchor="middle" fill="var(--text2)">Jue</text><text x="315.0" y="49.0" font-size="11" text-anchor="middle" fill="var(--text)" font-weight="400">23%</text><rect x="370" y="30.0" width="70" height="150.0" rx="3" fill="#d03b3b"><title>Vie: 27.5% de tickets lentos</title></rect><text x="405.0" y="196" font-size="12" text-anchor="middle" fill="var(--text2)">Vie</text><text x="405.0" y="24.0" font-size="11" text-anchor="middle" fill="var(--text)" font-weight="700">28%</text></svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Modelo: ¿vale la pena frente a reglas simples?</h2>
+    <p class="finding">Predicción justo después del 2º evento del ticket · entrenado 2010-2011,
+      probado fuera de muestra en 2012 · excluye el 4,7% de casos donde el 2º evento coincide
+      con el cierre (evita fuga de información).</p>
+    <table>
+      <tr><th>Modelo</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th></tr>
+      <tr><td>Baseline: clase mayoritaria</td><td>0.821</td><td>0.000</td><td>0.000</td><td>0.000</td><td>—</td></tr><tr><td>Baseline: regla 'si es viernes'</td><td>0.727</td><td>0.249</td><td>0.260</td><td>0.254</td><td>—</td></tr><tr><td>Regresión logística</td><td>0.779</td><td>0.381</td><td>0.374</td><td>0.378</td><td>0.644</td></tr><tr><td>Random Forest</td><td>0.818</td><td>0.486</td><td>0.324</td><td>0.389</td><td>0.623</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>¿Qué variable pesa más?</h2>
+    <div class="frow"><span class="flabel">gap_to_second_event_h</span><svg width="310" height="20"><rect x="0" y="2" width="300" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">64.0%</span></div><div class="frow"><span class="flabel">open_month_9</span><svg width="310" height="20"><rect x="0" y="2" width="28" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">6.0%</span></div><div class="frow"><span class="flabel">open_hour</span><svg width="310" height="20"><rect x="0" y="2" width="21" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">4.5%</span></div><div class="frow"><span class="flabel">open_month_10</span><svg width="310" height="20"><rect x="0" y="2" width="13" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">2.8%</span></div><div class="frow"><span class="flabel">open_weekday_4</span><svg width="310" height="20"><rect x="0" y="2" width="11" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">2.5%</span></div><div class="frow"><span class="flabel">open_weekday_1</span><svg width="310" height="20"><rect x="0" y="2" width="11" height="16" rx="3" fill="var(--blue)"/></svg><span class="fval">2.3%</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Asistente de IA generativa — preguntas de negocio</h2>
+    <p class="finding">Respuestas generadas por el LLM (Groq), contrastadas automáticamente
+      contra los resultados verificados de este proyecto.</p>
+    <div class="empty-state">Aún no se ejecutó el asistente de IA generativa (requiere tu API key de Groq, ver <code>05_genai_assistant.py</code>). Esta sección se completa sola al generar <code>genai_log.json</code>.</div>
+  </div>
+
+  <footer>
+    Proyecto Final · Diplomado IA Generativa y ML · Fuente: Verenich, I. (2016).
+    Helpdesk [Data set]. Mendeley Data. DOI 10.17632/39bp3vv62t.1 (Licencia MIT).
+  </footer>
+</div>
+</div>
+</body>
+</html>

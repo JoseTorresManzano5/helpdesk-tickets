@@ -1,0 +1,11 @@
+{
+  "duration_median_h":94.2675,
+  "duration_p75_h":340.7490972222,
+  "rework_rate":0.2741850683,
+  "rework_duration_lift_x":4.5526497826,
+  "slowrate_best_day":"Mar",
+  "slowrate_worst_day":"Vie",
+  "slowrate_weekday_spread_pp":6.5550111833,
+  "n_weekend_cases_excluded":56,
+  "complexity_duration_corr":0.4245087879
+}

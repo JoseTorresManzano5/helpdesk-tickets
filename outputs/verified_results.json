@@ -1,0 +1,34 @@
+{
+  "dataset": {
+    "nombre": "Helpdesk (Verenich, 2016, Mendeley Data, DOI 10.17632/39bp3vv62t.1)",
+    "licencia": "MIT",
+    "n_casos": 3804,
+    "n_eventos": 13710,
+    "periodo": "2010-01-13 a 2012-11-06"
+  },
+  "eda": {
+    "duracion_mediana_horas": 94.3,
+    "duracion_p75_horas": 340.7,
+    "tasa_reproceso": 27.4,
+    "factor_reproceso_sobre_duracion": 4.6,
+    "dia_mejor_tasa_lenta": "Mar",
+    "dia_peor_tasa_lenta": "Vie",
+    "spread_dia_semana_pp": 6.6,
+    "casos_fin_de_semana_excluidos_del_analisis_diario": 56
+  },
+  "modelo": {
+    "pregunta": "¿Se resolverá este ticket más lento que el 75% de los casos del periodo de entrenamiento (umbral fijo en horas), prediciendo justo después de registrado el 2º evento del caso?",
+    "punto_de_prediccion": "tras el 2º evento del ticket (no en la apertura)",
+    "entrenamiento": "2010-2011 (chronological split)",
+    "prueba_fuera_de_muestra": "2012",
+    "n_entrenamiento": 2403,
+    "n_prueba": 1223,
+    "tasa_base_prueba": 17.9,
+    "mejor_modelo": "Regresión logística",
+    "auc_regresion_logistica": 0.644,
+    "auc_random_forest": 0.623,
+    "variable_mas_importante": "gap_to_second_event_h",
+    "importancia_variable_principal_pct": 64.0,
+    "limitacion_cobertura": "excluye 4.7% de tickets que cierran en 2 eventos (el 2do evento coincidiría con el cierre -> fuga de información)"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "train_size": 2403,
+  "test_size": 1223,
+  "base_rate_train": 0.25010403662089054,
+  "base_rate_test": 0.17906786590351595,
+  "best_model": "Regresión logística",
+  "best_roc_auc": 0.6437150939620513,
+  "logreg_roc_auc": 0.6437150939620513,
+  "rf_roc_auc": 0.6228192253815786,
+  "top_features": [
+    {
+      "feature": "gap_to_second_event_h",
+      "importance": 0.6404118026490931
+    },
+    {
+      "feature": "open_month_9",
+      "importance": 0.05974949017473868
+    },
+    {
+      "feature": "open_hour",
+      "importance": 0.045399964531767346
+    },
+    {
+      "feature": "open_month_10",
+      "importance": 0.02843410070097123
+    },
+    {
+      "feature": "open_weekday_4",
+      "importance": 0.02453368476346669
+    },
+    {
+      "feature": "open_weekday_1",
+      "importance": 0.023057992191133664
+    },
+    {
+      "feature": "second_activity_9",
+      "importance": 0.02100527760048679
+    },
+    {
+      "feature": "open_month_11",
+      "importance": 0.020854349850577304
+    },
+    {
+      "feature": "open_month_7",
+      "importance": 0.017146894445500035
+    },
+    {
+      "feature": "second_activity_1",
+      "importance": 0.015421611574754253
+    }
+  ]
+}
