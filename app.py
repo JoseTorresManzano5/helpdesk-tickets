@@ -177,7 +177,7 @@ with tab_modelo:
     )
 
     def highlight_best(row):
-        is_model = row["modelo"] in ("Regresión logística", "Random Forest")
+        is_model = row.name in ("Regresión logística", "Random Forest")
         return ["background-color: #e8f3ff" if is_model else "" for _ in row]
 
     st.dataframe(
