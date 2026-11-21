@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 
 RESULTS_PATH = sys.argv[1] if len(sys.argv) > 1 else "outputs/verified_results.json"
 LOG_PATH = sys.argv[2] if len(sys.argv) > 2 else "outputs/genai_log.json"
-MODEL = "llama-3.3-70b-versatile"  # modelo gratuito disponible en Groq
+MODEL = "openai/gpt-oss-120b"  # modelo gratuito disponible en Groq
 
 with open(RESULTS_PATH, encoding="utf-8") as f:
     verified = json.load(f)
