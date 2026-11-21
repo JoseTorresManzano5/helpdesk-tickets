@@ -181,7 +181,7 @@ if user_question:
                         {"role": "user", "content": user_question},
                     ],
                     temperature=0.1,
-                    max_tokens=400,
+                    max_tokens=1000,
                 )
                 st.write(resp.choices[0].message.content)
             except Exception as e:
