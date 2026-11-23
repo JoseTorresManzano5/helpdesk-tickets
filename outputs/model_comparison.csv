@@ -1,5 +1,5 @@
 modelo,accuracy,precision,recall,f1,roc_auc
 Baseline: clase mayoritaria,0.821,0.0,0.0,0.0,
 Baseline: regla 'si es viernes',0.727,0.249,0.26,0.254,
-Regresión logística,0.779,0.381,0.374,0.378,0.644
+Regresión logística,0.779,0.381,0.374,0.378,0.643
 Random Forest,0.818,0.486,0.324,0.389,0.623

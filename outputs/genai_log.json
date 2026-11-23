@@ -1,46 +1,49 @@
 {
   "modelo_llm": "openai/gpt-oss-120b",
-  "generado_en_utc": "2026-11-21T05:02:30.665890+00:00",
+  "generado_en_utc": "2026-11-23T15:56:06.830149+00:00",
   "fuente_de_verdad": "outputs/verified_results.json",
   "interacciones": [
     {
       "pregunta": "¿Vale la pena construir un modelo para anticipar tickets lentos, o el proceso actual (sin modelo) ya es suficiente?",
-      "respuesta": "Construir el modelo aporta valor añadido respecto al proceso sin predicción.  \n\n- **Tasa base (sin modelo) en la prueba:** 17.9 % de tickets son “lentos”.  \n- **AUC del mejor modelo (regresión logística):** 0.644, lo que indica una capacidad discriminatoria superior a la aleatoria (0.5) y, por tanto, una mejora real en la identificación de tickets que superarán el percentil 75 de duración.  \n\nAdemás, la variable más influyente es **gap_to_second_event_h**, que explica el **64.0 %** de la importancia del modelo, lo que sugiere que la información disponible tras el segundo evento es suficientemente informativa para anticipar lentitud.  \n\n**Limitación:** el modelo no cubre el **4.7 %** de tickets que cierran en dos eventos (el segundo coincide con el cierre), por lo que habrá una pequeña fracción de casos que quedarán fuera de la predicción.  \n\n**Conclusión de negocio:**  \n- Si",
+      "respuesta": "**Sí, el modelo aporta valor añadido respecto al proceso sin predicción, aunque la mejora es moderada.**  \n\n- **Tasa base (sin modelo):** 17.9 % de los tickets se consideran “lentos”.  \n- **Mejor modelo (regresión logística):** AUC = 0.643 (vs. 0.5 de un clasificador aleatorio).  \n\nUn AUC de 0.643 indica que el modelo es capaz de distinguir mejor que el azar entre tickets que serán lentos y los que no, lo que permite priorizar intervenciones en un subconjunto con mayor probabilidad de retraso.  \n\n**Consideraciones operativas**  \n\n| Aspecto | Valor |\n|---|---|\n| **Cobertura** | Excluye 4.7 % de tickets que cierran en 2 eventos (fuga de información). |\n| **Variable clave** | *gap_to_second_event_h* (64 % de la importancia",
       "control_de_cifras": {
         "numeros_citados": [
           "0.5",
-          "0.644",
+          "0.643",
           "17.9",
+          "2",
           "4.7",
-          "64.0",
-          "75"
+          "64"
         ],
         "numeros_no_verificables": [
           "0.5",
-          "4.7",
-          "75"
+          "4.7"
         ],
         "todas_las_cifras_verificadas": false
       }
     },
     {
       "pregunta": "¿Cuál es la señal más importante para saber si un ticket se va a demorar, y en qué momento del proceso está disponible?",
-      "respuesta": "La señal más importante es **“gap_to_second_event_h”** (la brecha en horas hasta el segundo evento del caso).  \nEsta variable está disponible **justo después del 2.º evento del ticket** (no en la apertura), momento en el que se realiza la predicción.",
+      "respuesta": "La señal más importante es **“gap_to_second_event_h”** (la brecha en horas hasta el segundo evento), que aporta **64.0 %** de la importancia del modelo.  \nEsta variable solo está disponible **tras el 2.º evento del ticket** (es el punto de predicción que usamos).  \n\nEn la práctica, una vez registrado el segundo evento se puede estimar con mayor confianza si el caso se resolverá más lento que el 75 % de los tickets del periodo de entrenamiento.",
       "control_de_cifras": {
         "numeros_citados": [
-          "2"
+          "2",
+          "64.0",
+          "75"
         ],
-        "numeros_no_verificables": [],
-        "todas_las_cifras_verificadas": true
+        "numeros_no_verificables": [
+          "75"
+        ],
+        "todas_las_cifras_verificadas": false
       }
     },
     {
       "pregunta": "¿El día de la semana en que se abre el ticket es un buen predictor por sí solo? Justifica con los números.",
-      "respuesta": "No. Aunque el día de apertura muestra alguna variación (el **“día mejor tasa lenta”** es **Mar** y el **“día peor tasa lenta”** es **Vie**, con un **spread de día de semana de 6.6 pp**), esa diferencia es modesta y no aparece entre las variables más relevantes del modelo.  \n\nEl modelo con mejor desempeño (regresión logística) indica que la **variable más importante** es **gap_to_second_event_h**, que aporta **64 %** de la importancia total, mientras que el día de la semana no figura entre los predictores destacados. Por lo tanto, el día de apertura, por sí solo, no",
+      "respuesta": "El día de la semana en que se abre el ticket muestra cierta variación en la tasa de resolución lenta (el “mejor” día es **Mar** y el “peor” es **Vie**), con una diferencia de **8.4 pp** entre ambos.  \n\nSin embargo, en el modelo predictivo esa variable no aparece como la más influyente: la característica con mayor peso es **gap_to_second_event_h**, que aporta **64.0 %** de la importancia total.  \n\nPor lo tanto, aunque el día de apertura tiene un efecto modestamente medible (8.4 pp), por sí solo no constituye un buen predictor comparado con otras variables, especialmente el intervalo hasta el segundo evento. En decisiones de negocio conviene priorizar información temporal del ticket (p. ej., gap_to_second_event_h) antes que el día de la semana de apertura.",
       "control_de_cifras": {
         "numeros_citados": [
-          "6.6",
-          "64"
+          "64.0",
+          "8.4"
         ],
         "numeros_no_verificables": [],
         "todas_las_cifras_verificadas": true

@@ -15,7 +15,10 @@ Uso:
 import json
 import re
 import sys
+sys.stdout.reconfigure(encoding="utf-8")
 import os
+import truststore
+truststore.inject_into_ssl()
 from datetime import datetime, timezone
 
 RESULTS_PATH = sys.argv[1] if len(sys.argv) > 1 else "outputs/verified_results.json"

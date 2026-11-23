@@ -1,0 +1,27 @@
+# Secretos y variables de entorno
+.env
+.env.*
+.streamlit/secrets.toml
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# IDE / sistema operativo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.log

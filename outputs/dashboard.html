@@ -107,7 +107,7 @@
       con el cierre (evita fuga de información).</p>
     <table>
       <tr><th>Modelo</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th></tr>
-      <tr><td>Baseline: clase mayoritaria</td><td>0.821</td><td>0.000</td><td>0.000</td><td>0.000</td><td>—</td></tr><tr><td>Baseline: regla 'si es viernes'</td><td>0.727</td><td>0.249</td><td>0.260</td><td>0.254</td><td>—</td></tr><tr><td>Regresión logística</td><td>0.779</td><td>0.381</td><td>0.374</td><td>0.378</td><td>0.644</td></tr><tr><td>Random Forest</td><td>0.818</td><td>0.486</td><td>0.324</td><td>0.389</td><td>0.623</td></tr>
+      <tr><td>Baseline: clase mayoritaria</td><td>0.821</td><td>0.000</td><td>0.000</td><td>0.000</td><td>—</td></tr><tr><td>Baseline: regla 'si es viernes'</td><td>0.727</td><td>0.249</td><td>0.260</td><td>0.254</td><td>—</td></tr><tr><td>Regresión logística</td><td>0.779</td><td>0.381</td><td>0.374</td><td>0.378</td><td>0.643</td></tr><tr><td>Random Forest</td><td>0.818</td><td>0.486</td><td>0.324</td><td>0.389</td><td>0.623</td></tr>
     </table>
   </div>
 
@@ -120,7 +120,26 @@
     <h2>Asistente de IA generativa — preguntas de negocio</h2>
     <p class="finding">Respuestas generadas por el LLM (Groq), contrastadas automáticamente
       contra los resultados verificados de este proyecto.</p>
-    <div class="empty-state">Aún no se ejecutó el asistente de IA generativa (requiere tu API key de Groq, ver <code>05_genai_assistant.py</code>). Esta sección se completa sola al generar <code>genai_log.json</code>.</div>
+    <div class="qa"><p class="q">¿Vale la pena construir un modelo para anticipar tickets lentos, o el proceso actual (sin modelo) ya es suficiente?</p><p class="a">**Sí, el modelo aporta valor añadido respecto al proceso sin predicción, aunque la mejora es moderada.**  
+
+- **Tasa base (sin modelo):** 17.9 % de los tickets se consideran “lentos”.  
+- **Mejor modelo (regresión logística):** AUC = 0.643 (vs. 0.5 de un clasificador aleatorio).  
+
+Un AUC de 0.643 indica que el modelo es capaz de distinguir mejor que el azar entre tickets que serán lentos y los que no, lo que permite priorizar intervenciones en un subconjunto con mayor probabilidad de retraso.  
+
+**Consideraciones operativas**  
+
+| Aspecto | Valor |
+|---|---|
+| **Cobertura** | Excluye 4.7 % de tickets que cierran en 2 eventos (fuga de información). |
+| **Variable clave** | *gap_to_second_event_h* (64 % de la importancia</p><span class="badge bad">⚠ revisar cifras citadas</span></div><div class="qa"><p class="q">¿Cuál es la señal más importante para saber si un ticket se va a demorar, y en qué momento del proceso está disponible?</p><p class="a">La señal más importante es **“gap_to_second_event_h”** (la brecha en horas hasta el segundo evento), que aporta **64.0 %** de la importancia del modelo.  
+Esta variable solo está disponible **tras el 2.º evento del ticket** (es el punto de predicción que usamos).  
+
+En la práctica, una vez registrado el segundo evento se puede estimar con mayor confianza si el caso se resolverá más lento que el 75 % de los tickets del periodo de entrenamiento.</p><span class="badge bad">⚠ revisar cifras citadas</span></div><div class="qa"><p class="q">¿El día de la semana en que se abre el ticket es un buen predictor por sí solo? Justifica con los números.</p><p class="a">El día de la semana en que se abre el ticket muestra cierta variación en la tasa de resolución lenta (el “mejor” día es **Mar** y el “peor” es **Vie**), con una diferencia de **8.4 pp** entre ambos.  
+
+Sin embargo, en el modelo predictivo esa variable no aparece como la más influyente: la característica con mayor peso es **gap_to_second_event_h**, que aporta **64.0 %** de la importancia total.  
+
+Por lo tanto, aunque el día de apertura tiene un efecto modestamente medible (8.4 pp), por sí solo no constituye un buen predictor comparado con otras variables, especialmente el intervalo hasta el segundo evento. En decisiones de negocio conviene priorizar información temporal del ticket (p. ej., gap_to_second_event_h) antes que el día de la semana de apertura.</p><span class="badge good">✓ cifras verificadas</span></div>
   </div>
 
   <footer>

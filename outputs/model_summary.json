@@ -3,9 +3,9 @@
   "test_size": 1223,
   "base_rate_train": 0.25010403662089054,
   "base_rate_test": 0.17906786590351595,
-  "best_model": "RegresiÃ³n logÃ­stica",
-  "best_roc_auc": 0.6437150939620513,
-  "logreg_roc_auc": 0.6437150939620513,
+  "best_model": "Regresión logística",
+  "best_roc_auc": 0.6434058287398352,
+  "logreg_roc_auc": 0.6434058287398352,
   "rf_roc_auc": 0.6228192253815786,
   "top_features": [
     {

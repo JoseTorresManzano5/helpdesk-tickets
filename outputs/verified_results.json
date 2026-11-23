@@ -13,7 +13,7 @@
     "factor_reproceso_sobre_duracion": 4.6,
     "dia_mejor_tasa_lenta": "Mar",
     "dia_peor_tasa_lenta": "Vie",
-    "spread_dia_semana_pp": 6.6,
+    "spread_dia_semana_pp": 8.4,
     "casos_fin_de_semana_excluidos_del_analisis_diario": 56
   },
   "modelo": {
@@ -25,7 +25,7 @@
     "n_prueba": 1223,
     "tasa_base_prueba": 17.9,
     "mejor_modelo": "Regresión logística",
-    "auc_regresion_logistica": 0.644,
+    "auc_regresion_logistica": 0.643,
     "auc_random_forest": 0.623,
     "variable_mas_importante": "gap_to_second_event_h",
     "importancia_variable_principal_pct": 64.0,
